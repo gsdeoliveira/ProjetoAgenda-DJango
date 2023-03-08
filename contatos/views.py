@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Contato
+from django.http import Http404
 
 def index(request):
     contatos = Contato.objects.all()
@@ -8,8 +9,12 @@ def index(request):
     })
 
 def ver_contato(request, contato_id):
-    contato = Contato.objects.get(id=contato_id)
+    # try:
+    #  contato = Contato.objects.get(id=contato_id)
+    contato = get_object_or_404(Contato, id=contato_id)
     return render(request, 'contatos/ver_contato.html', {
         'contato': contato
     })
+    #  except Contato.DoesNotExist as e:
+    #  raise Http404()
 
